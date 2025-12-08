@@ -1,11 +1,9 @@
 <div>
-    <!-- Modal -->
     <div class="modal fade @if ($showModal) show @endif" tabindex="-1"
         @if ($showModal) style="display: block;" @endif>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-4 shadow">
 
-                <!-- Header -->
                 <div class="modal-header">
                     <h5 class="modal-title">
                         @if ($mode === 'verify')
@@ -19,7 +17,6 @@
                     <button type="button" class="btn-close" wire:click="closeModal"></button>
                 </div>
 
-                <!-- Switch buttons -->
                 @if ($mode !== 'verify')
                     <div class="d-flex justify-content-center my-3">
                         <button class="btn btn-outline-primary me-2 @if ($mode === 'input') active @endif"
@@ -29,10 +26,8 @@
                     </div>
                 @endif
 
-                <!-- Body -->
                 <div class="modal-body">
 
-                    <!-- Регистрация -->
                     @if ($mode === 'input')
                         <form wire:submit.prevent="startRegister" class="d-flex flex-column gap-3">
                             <div class="form-group">
@@ -49,7 +44,9 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <input wire:model.defer="phone" type="text" placeholder="Телефон" class="form-control">
+                            <input wire:model.defer="phone" type="text"
+                                placeholder="Телефон (11 цифр, например 79XXXXXXXXX)" class="form-control"
+                                maxlength="11" pattern="[0-9]*" inputmode="numeric">
                             @error('phone')
                                 <div class="text-danger small">{{ $message }}</div>
                             @enderror
@@ -60,11 +57,25 @@
                             @error('password')
                                 <div class="text-danger small">{{ $message }}</div>
                             @enderror
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" id="policyCheck"
+                                    wire:model.defer="policyAccepted">
+                                <label class="form-check-label small" for="policyCheck">
+                                    Я принимаю <a href="/policy" target="_blank"
+                                        class="text-decoration-underline">политику обработки персональных данных</a> и
+                                    <a href="/terms" target="_blank" class="text-decoration-underline">пользовательское
+                                        соглашение</a>
+                                </label>
+                            </div>
+                            @error('policyAccepted')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
+
                             <button type="submit" class="btn btn-primary w-100">Отправить код</button>
                         </form>
                     @endif
 
-                    <!-- Верификация кода -->
                     @if ($mode === 'verify')
                         <form wire:submit.prevent="verifyCode" class="d-flex flex-column gap-3">
                             <input wire:model.defer="code" type="text" placeholder="Код из SMS" class="form-control">
@@ -75,11 +86,10 @@
                         </form>
                     @endif
 
-                    <!-- Авторизация -->
                     @if ($mode === 'login')
                         <form wire:submit.prevent="login" class="d-flex flex-column gap-3">
-                            <input wire:model.defer="loginPhone" type="text" placeholder="Телефон"
-                                class="form-control">
+                            <input wire:model.defer="loginPhone" type="text" placeholder="Телефон (11 цифр)"
+                                class="form-control" maxlength="11" pattern="[0-9]*" inputmode="numeric">
                             <input wire:model.defer="loginPassword" type="password" placeholder="Пароль"
                                 class="form-control">
                             @error('loginPhone')

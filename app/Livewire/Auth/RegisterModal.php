@@ -23,6 +23,8 @@ class RegisterModal extends Component
     public $loginPhone;
     public $loginPassword;
 
+    public $policyAccepted = false;
+
 
     #[On('show-register-modal')]
     public function openModal()
@@ -44,16 +46,19 @@ class RegisterModal extends Component
         $this->password_confirmation = '';
         $this->code = '';
         $this->mode = 'input';
+        $this->policyAccepted = false;
     }
 
     // Шаг 1: ввод телефона + пароля
     public function startRegister()
     {
+        //dd($this->all());
         $this->validate([
             'role' => 'required|exists:roles,id',
-            'phone' => 'required|string|unique:users,phone',
+            'phone' => 'required|string|digits:11|unique:users,phone',
             'password' => 'required|string|min:6|same:password_confirmation',
             'password_confirmation' => 'required',
+            'policyAccepted' => 'required|accepted',
         ]);
 
         //$code = rand(1000, 9999);
@@ -126,7 +131,7 @@ class RegisterModal extends Component
     public function login()
     {
         $this->validate([
-            'loginPhone' => 'required',
+            'loginPhone' => 'required|digits:11',
             'loginPassword' => 'required',
         ]);
 
