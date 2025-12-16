@@ -18,8 +18,15 @@ return new class extends Migration
             $table->text('description');
             $table->string('slug');
             $table->string('address');
+
             $table->date('date_start');
             $table->date('date_end');
+
+            $table->time('time_start')->after('date_start');
+            $table->time('time_end')->after('date_end')->nullable();
+
+            $table->integer('duration_minutes')->nullable();
+
             $table->decimal('price', 10, 2);
             $table->integer('limit');
 

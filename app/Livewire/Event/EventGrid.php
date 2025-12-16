@@ -17,7 +17,7 @@ class EventGrid extends Component
         $cacheKey = "events:grid:latest:amount:{$this->amount}";
 
         $events = Cache::remember($cacheKey, now()->addMinutes(5), function () {
-            return Event::with(['images', 'category', 'subCategory'])
+            return Event::with(['images', 'category', 'subCategory', 'user'])
                 ->latest()
                 ->take($this->amount)
                 ->get();
