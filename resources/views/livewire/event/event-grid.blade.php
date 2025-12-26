@@ -256,4 +256,5 @@
     <div class="text-center my-3" x-show="loading">
         Загрузка...
     </div>
+
 </div>

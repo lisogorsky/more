@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(Category_SubcategorySeeder::class);
         $this->call(UsersSeeder::class);
         $this->call(EventSeeder::class);
+        $this->call(ReviewSeeder::class);
     }
 }
