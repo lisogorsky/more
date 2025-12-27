@@ -8,6 +8,14 @@
                 {{ $review->created_at->format('d.m.Y') }}
             </div>
             <p class="mt-1">{{ $review->review }}</p>
+
+            @if ($review->images->isNotEmpty())
+                <div class="mt-2">
+                    @foreach ($review->images as $image)
+                        <img src="{{ asset('storage/' . $image->path) }}" class="w-24 h-24 object-cover" alt="">
+                    @endforeach
+                </div>
+            @endif
         </div>
     @empty
         <p class="text-gray-500">Отзывов пока нет</p>
