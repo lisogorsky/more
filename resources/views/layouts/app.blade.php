@@ -47,6 +47,17 @@
     {{-- Livewire скрипты --}}
     @livewireScripts
 
+    {{-- 🔥 ОТКРЫТИЕ МОДАЛКИ ЛОГИНА --}}
+    @if (session('open-login-modal'))
+        <script>
+            document.addEventListener('livewire:init', () => {
+                setTimeout(() => {
+                    Livewire.dispatch('show-register-modal')
+                }, 0)
+            })
+        </script>
+    @endif
+
     {{-- Свои скрипты --}}
     <script src="{{ asset('js/main.js') }}"></script>
 </body>
