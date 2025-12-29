@@ -28,7 +28,7 @@
 
     {{-- 🟦 СЕТКА --}}
     @if ($view === 'grid')
-        <div class="events-grid">
+        <div class="grid-4-cols">
             @forelse($events as $event)
                 <div class="events-col">
                     <div class="event-card">
