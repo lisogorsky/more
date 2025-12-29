@@ -7,7 +7,14 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    protected string $layout = 'layouts.app';
+    public string $tab = 'settings';
+
+    protected $queryString = ['tab'];
+
+    public function setTab(string $tab)
+    {
+        $this->tab = $tab;
+    }
 
     public function render()
     {

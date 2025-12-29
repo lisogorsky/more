@@ -13,6 +13,7 @@ class EventOrganizersGrid extends Component
             ->whereHas('roles', function ($q) {
                 $q->where('roles.id', 2); // Я Организатор
             })
+            ->limit(8)
             ->get();
 
         return view('livewire.event-organizers.event-organizers-grid', [

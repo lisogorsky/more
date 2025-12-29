@@ -27,6 +27,7 @@ class EventReviews extends Component
         $reviews = $query
             ->latest()
             ->take($this->perPage)
+            ->limit(3)
             ->get();
 
         $total = $query->count();
