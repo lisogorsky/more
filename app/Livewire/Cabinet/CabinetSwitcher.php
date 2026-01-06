@@ -26,6 +26,17 @@ class CabinetSwitcher extends Component
             $this->activeCabinet = $cabinetId;
             session(['active_cabinet' => $cabinetId]);
             $this->dispatch('cabinetSwitched');
+
+            // Определяем маршрут по типу кабинета
+            $route = match ($cabinetId) {
+                // Предположим, что у роли есть поле 'type' => 'organizer'|'participant'|'partner'
+                'organizer' => route('cabinet.organizer'),
+                'participant' => route('cabinet.participant'),
+                'partner' => route('cabinet.partner'),
+                default => route('cabinet.participant'),
+            };
+
+            return redirect($route);
         }
     }
 
