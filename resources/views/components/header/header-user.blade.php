@@ -23,8 +23,10 @@
         </div>
         <div class="user__info-wrap">
             <span class="user__name">{{ Auth::user()->name }}</span>
-            <div class="user__discr">{{ Auth::user()->role }}</div>
+            <div class="user__discr">{{ Auth::user()->roles->first()->name }}</div>
+            <livewire:cabinet.cabinet-switcher />
         </div>
+
         <a href="{{ route('logout') }}" class="user__logout"
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="icon-logout"></i>

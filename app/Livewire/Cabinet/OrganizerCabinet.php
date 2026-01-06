@@ -7,20 +7,17 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizerCabinet extends Component
 {
-    public $organizer;
+    public string $tab = 'bookings';
+    public string $cabinet = 'organizer';
 
-    // public function mount()
-    //{
-    // Берём текущего пользователя
-    //     $user = Auth::user();
+    protected $queryString = ['tab'];
 
-    // Проверяем есть ли профиль организатора
-    //$this->organizer = $user->organizer;
-
-    //    abort_unless($this->organizer, 403); // если нет профиля, доступ запрещён
-    //}
+    public function setTab(string $tab)
+    {
+        $this->tab = $tab;
+    }
     public function render()
     {
-        return view('livewire.cabinet.organizer-cabinet')->layout('layouts.app');
+        return view('livewire.cabinet.organizer-cabinet', ['cabinet' => $this->cabinet,])->layout('layouts.app');
     }
 }

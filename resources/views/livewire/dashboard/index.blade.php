@@ -1,31 +1,7 @@
 <div class="p-4">
-    <h1 class="mb-2">Личный кабинет</h1>
+    <h1 class="mb-2">Настройки профиля</h1>
     {{-- Меню --}}
     <ul class="nav nav-tabs mb-4">
-        <li class="nav-item">
-            <a class="nav-link @if ($tab === 'bookings') active @endif"
-                wire:click.prevent="setTab('bookings')">Мои брони</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if ($tab === 'filters') active @endif"
-                wire:click.prevent="setTab('filters')">Сохранённые фильтры</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if ($tab === 'media') active @endif"
-                wire:click.prevent="setTab('media')">Медиа</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if ($tab === 'favorites') active @endif"
-                wire:click.prevent="setTab('favorites')">Избранное</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if ($tab === 'partners') active @endif"
-                wire:click.prevent="setTab('partners')">Мои партнёры</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if ($tab === 'chats') active @endif"
-                wire:click.prevent="setTab('chats')">Чаты и уведомления</a>
-        </li>
         <li class="nav-item">
             <a class="nav-link @if ($tab === 'settings') active @endif"
                 wire:click.prevent="setTab('settings')">Настройки</a>
