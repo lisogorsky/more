@@ -30,9 +30,9 @@ class CabinetSwitcher extends Component
             // Определяем маршрут по типу кабинета
             $route = match ($cabinetId) {
                 // Предположим, что у роли есть поле 'type' => 'organizer'|'participant'|'partner'
-                'organizer' => route('cabinet.organizer'),
-                'participant' => route('cabinet.participant'),
-                'partner' => route('cabinet.partner'),
+                '2' => route('cabinet.organizer'),
+                '1' => route('cabinet.participant'),
+                '3' => route('cabinet.partner'),
                 default => route('cabinet.participant'),
             };
 
