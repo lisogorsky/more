@@ -20,19 +20,31 @@ class CabinetSwitcher extends Component
         $this->activeCabinet = session('active_cabinet') ?? ($this->cabinets->first()?->id ?? null);
     }
 
-    public function switchCabinet($cabinetId)
+    public function switchCabinet($value)
     {
+        // 1. Проверяем, не выбрал ли пользователь пункт "Настройки"
+        if ($value === 'go_to_settings') {
+            return redirect()->route('dashboard');
+        }
+
+        // 2. Если это ID роли, приводим к числу для надежности
+        $cabinetId = (int) $value;
+
+        // 3. Проверяем, есть ли у пользователя такая роль
         if (Auth::user()->roles->contains('id', $cabinetId)) {
+
+            // Сохраняем в сессию и обновляем свойство
             $this->activeCabinet = $cabinetId;
             session(['active_cabinet' => $cabinetId]);
+
+            // Сообщаем другим компонентам (если они не используют редирект)
             $this->dispatch('cabinetSwitched');
 
-            // Определяем маршрут по типу кабинета
+            // 4. Определяем маршрут (используем строковые ключи для match, так как ID пришли из селекта)
             $route = match ($cabinetId) {
-                // Предположим, что у роли есть поле 'type' => 'organizer'|'participant'|'partner'
-                '2' => route('cabinet.organizer'),
-                '1' => route('cabinet.participant'),
-                '3' => route('cabinet.partner'),
+                2 => route('cabinet.organizer'),
+                1 => route('cabinet.participant'),
+                3 => route('cabinet.partner'),
                 default => route('cabinet.participant'),
             };
 

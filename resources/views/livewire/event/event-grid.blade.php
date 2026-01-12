@@ -85,10 +85,10 @@
                         <div class="event-card__header">
                             <div class="event-card__user">
                                 <div class="event-card__user-avatar">
-                                    <img src="{{ asset($event->user->avatar) }}" alt="{{ $event->user->name }}">
+                                    <img src="{{ asset($event->organizer->logo) }}" alt="{{ $event->organizer->name }}">
                                 </div>
                                 <div class="event-card__user-name">
-                                    {{ $event->user->name }}
+                                    {{ $event->organizer->user->name }}
                                 </div>
                             </div>
                             <div class="event-card__raiting"><!-- Fake -->
@@ -211,8 +211,8 @@
                                 </div>
 
                                 <div>
-                                    {{ $event->user->name }}
-                                    <img src="{{ asset($event->user->avatar) }}" class="rounded-circle"
+                                    {{ $event->organizer->name }}
+                                    <img src="{{ asset($event->organizer->logo) }}" class="rounded-circle"
                                         style="width:20px; height:20px;">
 
                                 </div>

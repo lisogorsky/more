@@ -44,6 +44,9 @@ return new class extends Migration
             // Статус
             $table->boolean('is_active')->default(true);
 
+            //Модерация
+            $table->boolean('is_moderated')->default(false);
+
             $table->timestamps();
         });
     }

@@ -22,21 +22,27 @@ return new class extends Migration
             $table->date('date_start');
             $table->date('date_end');
 
+
             $table->time('time_start')->after('date_start');
             $table->time('time_end')->after('date_end')->nullable();
 
             $table->integer('duration_minutes')->nullable();
 
             $table->decimal('price', 10, 2);
-            $table->integer('limit');
+            $table->boolean('price_from')->default(false);
+            $table->boolean('has_discount')->default(false);
+            $table->enum('discount_type', ['percent', 'amount'])->nullable();
+            $table->decimal('discount_value', 10, 2)->nullable();
+
+            $table->integer('max_participants')->nullable();
 
             $table->string('seo_title')->nullable();
             $table->text('seo_description')->nullable();
 
             $table->foreignId('category_id')->constrained();
             $table->foreignId('sub_category_id')->constrained();
-
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('city_id')->constrained()->onDelete('cascade');
+            $table->foreignId('organizer_id')->constrained();
 
             $table->timestamps();
         });

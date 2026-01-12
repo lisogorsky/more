@@ -56,11 +56,6 @@ class User extends Authenticatable
         return $this->belongsTo(City::class);
     }
 
-    public function events()
-    {
-        return $this->hasMany(Event::class);
-    }
-
     public function partner()
     {
         return $this->hasOne(Partner::class);

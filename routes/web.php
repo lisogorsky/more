@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\Dashboard\Index;
 use App\Livewire\Event\EventShow;
+use App\Livewire\Event\EventCreate;
 use App\Livewire\Cabinet\OrganizerCabinet;
 use App\Livewire\Cabinet\ParticipantCabinet;
 use App\Livewire\Cabinet\PartnerCabinet;
@@ -11,7 +12,7 @@ use App\Livewire\Cabinet\PartnerCabinet;
 //События главная
 Route::get('/', function () {
     return view('events.index');
-});
+})->name('events.index');
 
 Route::get('/login', function () {
     return redirect('/')
@@ -25,7 +26,10 @@ Route::post('/logout', function () {
 
 Route::get('/dashboard', Index::class)->middleware(['auth'])->name('dashboard');
 
+//События
+Route::get('/event/create', EventCreate::class)->name('event.create');
 Route::get('/event/{event}', EventShow::class)->name('event.show');
+
 
 Route::get('/cabinet/organizer', OrganizerCabinet::class)->middleware(['auth'])->name('cabinet.organizer');
 Route::get('/cabinet/participant', ParticipantCabinet::class)->middleware(['auth'])->name('cabinet.participant');

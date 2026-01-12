@@ -26,6 +26,12 @@
             <a class="nav-link @if ($tab === 'chats') active @endif"
                 wire:click.prevent="setTab('chats')">Чаты и уведомления</a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link @if ($tab === 'profile') active @endif"
+                wire:click.prevent="setTab('profile')">Профиль</a>
+        </li>
+
     </ul>
 
     {{-- Контент --}}
@@ -49,6 +55,10 @@
 
             @case('chats')
                 <livewire:dashboard.chats />
+            @break
+
+            @case('profile')
+                <livewire:dashboard.profile />
             @break
         @endswitch
     </div>

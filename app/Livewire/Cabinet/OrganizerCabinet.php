@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizerCabinet extends Component
 {
-    public string $tab = 'bookings';
+    public string $tab = 'events';
     public string $cabinet = 'organizer';
 
     protected $queryString = ['tab'];

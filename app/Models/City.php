@@ -22,4 +22,14 @@ class City extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function location_partners()
+    {
+        return $this->hasMany(LocationPartner::class);
+    }
 }

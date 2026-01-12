@@ -23,7 +23,7 @@ class EventGrid extends Component
 
         $events = Cache::remember($cacheKey, now()->addMinutes(5), function () {
 
-            $query = Event::with(['images', 'category', 'subCategory', 'user'])
+            $query = Event::with(['images', 'category', 'subCategory', 'organizer'])
                 ->latest();
 
             if ($this->subcategoryId) {

@@ -58,8 +58,13 @@
         </script>
     @endif
 
+    {{-- Trix редактор --}}
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+
     {{-- Свои скрипты --}}
     <script src="{{ asset('js/main.js') }}"></script>
+
 </body>
 
 </html>

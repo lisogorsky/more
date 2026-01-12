@@ -30,6 +30,11 @@
             <a class="nav-link @if ($tab === 'employees') active @endif"
                 wire:click.prevent="setTab('settings')">Сотрудники</a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link @if ($tab === 'profile') active @endif"
+                wire:click.prevent="setTab('profile')">Профиль</a>
+        </li>
     </ul>
 
     {{-- Контент --}}
@@ -53,6 +58,10 @@
 
             @case('chats')
                 <livewire:dashboard.chats />
+            @break
+
+            @case('profile')
+                <livewire:dashboard.profile />
             @break
         @endswitch
     </div>

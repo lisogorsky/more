@@ -24,7 +24,7 @@
     </div>
     <div>
         <strong>Категория:</strong> {{ optional($event->category)->name ?? 'Без категории' }}
-        <strong>Подкатегория:</strong> {{ optional($event->subCategory)->name ?? 'Без подкатегории' }}
+        <strong>Подкатегория:</strong> {{ optional($event->subcategory)->name ?? 'Без подкатегории' }}
     </div>
 
 

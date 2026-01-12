@@ -6,16 +6,17 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\City;
+use App\Models\Organizer;
 use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
+use Illuminate\Support\Str;
 
 class UsersSeeder extends Seeder
 {
     public function run(): void
     {
-        $faker = Faker::create('ru_RU'); // русифицированные имена и фамилии
+        $faker = Faker::create('ru_RU');
 
-        // Получаем роли и города
         $roles = Role::all();
         $cities = City::all();
 
@@ -24,17 +25,10 @@ class UsersSeeder extends Seeder
         $avatars = glob($avatarsDir . '/*.{jpg,jpeg,png}', GLOB_BRACE);
 
         for ($i = 1; $i <= 100; $i++) {
-            // Случайный город
             $city = $cities->random();
 
-            // Случайный аватар
             $avatarPath = $avatars ? $avatars[array_rand($avatars)] : null;
-            if ($avatarPath) {
-                // Преобразуем путь для фронта
-                $avatar = 'storage/people/' . basename($avatarPath);
-            } else {
-                $avatar = null;
-            }
+            $avatar = $avatarPath ? 'storage/people/' . basename($avatarPath) : null;
 
             // Создаём пользователя
             $user = User::create([
@@ -51,8 +45,27 @@ class UsersSeeder extends Seeder
             // Назначаем от 1 до 3 ролей случайным образом
             $assignedRoles = $roles->random(rand(1, 3))->pluck('id')->toArray();
             $user->roles()->sync($assignedRoles);
+
+            // Если пользователь – организатор (роль с id = 2)
+            if (in_array(2, $assignedRoles)) {
+                Organizer::create([
+                    'user_id' => $user->id,
+                    'name' => $user->name . ' ' . $user->surname,
+                    'public_slug' => Str::slug($user->name . '-' . $user->surname) . '-' . uniqid(),
+                    'description' => $faker->paragraph,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'logo' => $avatar,
+                    'cover' => null,
+                    'instagram' => null,
+                    'telegram' => null,
+                    'meta_title' => $user->name . ' ' . $user->surname,
+                    'meta_description' => $faker->sentence,
+                    'is_active' => true,
+                ]);
+            }
         }
 
-        $this->command->info('✅ 100 пользователей с городами, ролями и аватарками успешно созданы!');
+        $this->command->info('✅ 100 пользователей с ролями и организаторов успешно созданы!');
     }
 }

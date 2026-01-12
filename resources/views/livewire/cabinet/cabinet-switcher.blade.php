@@ -12,10 +12,16 @@
             @empty
                 <option value="">Нет доступных кабинетов</option>
             @endforelse
+
+            <option value="go_to_settings" style="color: blue; font-weight: bold;">
+                ⚙️ Управление ролями...
+            </option>
         </select>
 
         <p>Активный кабинет:
             <strong>{{ $cabinets->firstWhere('id', $activeCabinet)?->name ?? 'Не выбран' }}</strong>
         </p>
+
+
     </div>
 </div>

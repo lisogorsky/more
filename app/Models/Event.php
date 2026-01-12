@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Event extends Model
 {
@@ -19,7 +20,7 @@ class Event extends Model
 
     public function subcategory()
     {
-        return $this->belongsTo(SubCategory::class);
+        return $this->belongsTo(SubCategory::class, 'sub_category_id');
     }
 
     public function images()
@@ -27,9 +28,14 @@ class Event extends Model
         return $this->hasMany(Image::class);
     }
 
-    public function user()
+    public function videos()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Video::class);
+    }
+
+    public function organizer()
+    {
+        return $this->belongsTo(Organizer::class);
     }
 
     public function reviews()
@@ -40,5 +46,17 @@ class Event extends Model
     public function averageRating()
     {
         return $this->reviews()->avg('rating');
+    }
+
+    public function partnerCategories()
+    {
+        return $this->belongsToMany(CategoryPartner::class, 'category_partner_event');
+    }
+
+    public function getStartsAtAttribute(): Carbon
+    {
+        return $this->date_start
+            ->copy()
+            ->setTimeFromTimeString($this->time_start);
     }
 }

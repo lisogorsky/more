@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('lat', 10, 6)->nullable(); // широта
             $table->decimal('lon', 10, 6)->nullable(); // долгота
             $table->string('slug')->unique();
+            $table->uuid('fias_id')->nullable()->unique();
             $table->timestamps();
         });
     }
