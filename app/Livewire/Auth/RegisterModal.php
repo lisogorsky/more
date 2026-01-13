@@ -118,12 +118,34 @@ class RegisterModal extends Component
             return;
         }
 
-        // Создаём пользователя
         $user = User::create([
             'phone' => $regData['phone'],
             'password' => $regData['password'],
         ]);
-        $user->roles()->attach($regData['role_id']);
+
+        // Подготавливаем массив ролей для привязки
+        $rolesToAttach = [$regData['role_id']];
+
+        // Если выбран Организатор (2) или Партнер (3), добавляем в массив ID Участника (1)
+        if (in_array($regData['role_id'], [2, 3])) {
+            $rolesToAttach[] = 1; // Добавляем ID роли участника
+        }
+
+        // Привязываем все роли сразу (метод attach умеет работать с массивом)
+        $user->roles()->attach(array_unique($rolesToAttach));
+
+        // Создаём профили в БД
+        // 1. Профиль участника создаем, если выбрана роль 1, 2 или 3
+        if (in_array($regData['role_id'], [1, 2, 3])) {
+            $user->participant()->create();
+        }
+
+        // 2. Дополнительные профили
+        match ($regData['role_id']) {
+            2 => $user->organizer()->create(),
+            3 => $user->partner()->create(),
+            default => null,
+        };
 
         Auth::login($user);
 
