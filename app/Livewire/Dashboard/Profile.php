@@ -28,6 +28,7 @@ class Profile extends Component
             'profile.inn' => 'nullable|string',
             'profile.bio' => 'nullable|string',
             'profile.selected_languages' => 'nullable|array',
+            'profile.selected_categories' => 'nullable|array',
         ];
     }
 
@@ -39,13 +40,15 @@ class Profile extends Component
         $model = $this->getModel();
 
         if ($model) {
-            // Загружаем модель со связями
-            $model->load('languages');
+            // Загружаем и языки, и нужные категории
+            $relation = ($this->activeRole === 3) ? 'categories' : 'subCategories';
+            $model->load(['languages', $relation]);
 
             $this->profile = $model->toArray();
-
-            // Помещаем ID выбранных языков в специальный ключ массива profile
             $this->profile['selected_languages'] = $model->languages->pluck('id')->toArray();
+
+            // Загружаем выбранные ID категорий/подкатегорий
+            $this->profile['selected_categories'] = $model->$relation->pluck('id')->toArray();
         }
     }
 
@@ -96,13 +99,27 @@ class Profile extends Component
             $this->profile[$field] = $path;
         }
 
-        // 2️⃣ Синхронизация языков (Полиморфная связь Many-to-Many)
+        // 2 Синхронизация языков (Полиморфная связь Many-to-Many)
         // Обновляем таблицу languageables
         $model->languages()->sync($this->profile['selected_languages'] ?? []);
 
-        // 3️⃣ Сохранение основных полей профиля
+        // 3. Синхронизация категорий/подкатегорий
+        if ($this->activeRole === 3) {
+            $model->categories()->sync($this->profile['selected_categories'] ?? []);
+        } else {
+            $model->subCategories()->sync($this->profile['selected_categories'] ?? []);
+        }
+
+
+        // 4 Сохранение основных полей профиля
         // Убираем 'selected_languages' и 'languages', так как этих колонок нет в таблицах профилей
-        $dataToSave = Arr::except($this->profile, ['selected_languages', 'languages']);
+        $dataToSave = Arr::except($this->profile, [
+            'selected_languages',
+            'languages',
+            'selected_categories',
+            'sub_categories',
+            'categories'
+        ]);
 
         $model->fill($dataToSave);
         $model->save();
@@ -113,20 +130,32 @@ class Profile extends Component
         session()->flash('success', 'Профиль успешно обновлен!');
     }
 
+    public function removeCategory($categoryId)
+    {
+        $this->profile['selected_categories'] = array_values(
+            array_diff($this->profile['selected_categories'], [$categoryId])
+        );
+    }
+
     public function render()
     {
-        $selectedIds = $this->profile['selected_languages'] ?? [];
+        $selectedLangIds = $this->profile['selected_languages'] ?? [];
+        $selectedCatIds = $this->profile['selected_categories'] ?? [];
+
+        // Определяем, какую модель категорий использовать
+        if ($this->activeRole === 3) {
+            $categoryModel = \App\Models\CategoryPartner::class;
+        } else {
+            $categoryModel = \App\Models\SubCategory::class;
+        }
 
         return view('livewire.dashboard.profile', [
-            // Языки, которые юзер еще НЕ выбрал
-            'availableLanguages' => Language::whereNotIn('id', $selectedIds)
-                ->orderBy('name')
-                ->get(),
+            'availableLanguages' => Language::whereNotIn('id', $selectedLangIds)->orderBy('name')->get(),
+            'myLanguages' => Language::whereIn('id', $selectedLangIds)->orderBy('name')->get(),
 
-            // Языки, которые юзер УЖЕ выбрал
-            'myLanguages' => Language::whereIn('id', $selectedIds)
-                ->orderBy('name')
-                ->get(),
+            // Передаем списки категорий
+            'availableCategories' => $categoryModel::whereNotIn('id', $selectedCatIds)->orderBy('name')->get(),
+            'myCategories' => $categoryModel::whereIn('id', $selectedCatIds)->orderBy('name')->get(),
         ]);
     }
 }

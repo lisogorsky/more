@@ -114,6 +114,47 @@
 
         <hr class="my-4">
 
+
+        {{-- Категории --}}
+        <div class="categories-selection">
+            <label class="font-bold mb-2 block">Выберите категории:</label>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 border p-4 rounded-lg bg-gray-50">
+                @foreach ($availableCategories as $category)
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="cat-{{ $category->id }}" value="{{ $category->id }}"
+                            wire:model.live="profile.selected_categories"
+                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <label for="cat-{{ $category->id }}" class="text-sm cursor-pointer select-none">
+                            {{ $category->name }}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+
+            @if (!empty($profile['selected_categories']))
+                <div class="mt-4">
+                    <label class="text-xs text-gray-500 uppercase">Выбрано:</label>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                        @foreach ($myCategories as $category)
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                {{ $category->name }}
+                                <button type="button" wire:click="removeCategory({{ $category->id }})"
+                                    class="ml-2 inline-flex items-center justify-center text-blue-400 hover:text-blue-600 focus:outline-none">
+                                    <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+        </div>
+
         {{-- Кнопка --}}
         <div class="d-flex justify-content-end align-items-center">
             <button type="submit" class="btn btn-primary me-3">Сохранить изменения</button>

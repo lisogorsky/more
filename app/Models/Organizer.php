@@ -26,4 +26,9 @@ class Organizer extends Model
     {
         return $this->morphToMany(Language::class, 'languageable');
     }
+
+    public function subCategories()
+    {
+        return $this->morphToMany(SubCategory::class, 'sub_categorizable');
+    }
 }

@@ -15,4 +15,14 @@ class SubCategory extends Model
     {
         return $this->hasMany(Event::class);
     }
+
+    public function organizers()
+    {
+        return $this->morphedByMany(Organizer::class, 'sub_categorizable');
+    }
+
+    public function participants()
+    {
+        return $this->morphedByMany(Participant::class, 'sub_categorizable');
+    }
 }
